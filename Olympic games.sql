@@ -1,9 +1,6 @@
 
 --- OLYMPIC GAMES DATASET
 ---EXPLORE THE Data, select top 10 rows
-SELECT TOP 5 *
-FROM athlete_events$	
-
 
 --- 1. How many olympics games have been held?
 SELECT COUNT (DISTINCT (Games)) AS Total_games_played
@@ -21,24 +18,6 @@ SELECT Games, COUNT(DISTINCT(NOC)) AS number_nations_participated
 FROM athlete_events$
 GROUP BY Games
 ORDER BY Games
-
---- 4. Which year saw the highest and lowest no of countries participating in olympics
-'''
----WITH Participants(Year, NOC) AS
-	(
-	SELECT Year, COUNT(DISTINCT(NOC)) AS Total_participants
-	FROM athlete_events$
-	GROUP BY Year
-	)
-SELECT Year, MAX(NOC) AS Highest_particpants_year, MIN(NOC) AS lowest_participants_year
-FROM Participants
-GROUP BY Year
-
-SELECT Year, MAX(COUNT(
-	SELECT COUNT(DISTINCT(NOC))
-	FROM athlete_events$)) AS highest_count
-FROM athlete_event$
-'''
 
 --- 4. Which year saw the highest and lowest no of countries participating in olympics
       with all_countries as
@@ -61,34 +40,6 @@ FROM athlete_event$
       from tot_countries
       order by 1;
 
----WITH cte AS(
----		SELECT Games, COUNT(DISTINCT(NOC)) AS countries_participated
----		FROM athlete_events$
----		GROUP BY Games)
----(first_value(games) over(order by total_countries)
----SELECT TOP 1 first_value(Games) over(ORDER BY countries_participated) AS lowest_paricipation_year	
----FROM cte
-
----HDA
----WITH country_count AS (
----			SELECT Games, COUNT(DISTINCT(NOC)) AS count_y
----			FROM athlete_events$
----			GROUP BY Games)
----SELECT CONCAT('Highest', ' ','-', ' ', MAX(count_y)) AS highest_attendance, 
----	   CONCAT('Lowest attendance', ' ', '-', ' ', MIN(count_y)) AS minimum_attendance
----FROM country_count
-
----5. Which nation has participated in all of the olympic games
----//Count the number of Olympic Games
----SELECT COUNT(DISTINCT(Games)) AS Total_games_held
----FROM athlete_events$
-
----SELECT r.region, COUNT(DISTINCT(e.Games)) AS gamess
----FROM noc_regions$ AS r
----FULL JOIN athlete_events$ AS e
----ON r.NOC = e.NOC
----WHERE gamess = 51 
----GROUP BY r.region
 
 WITH tot_games AS(
 		SELECT COUNT(DISTINCT(Games)) AS Total_games
@@ -327,11 +278,3 @@ ON gm.country = sm.country
 JOIN bronze_medals AS bm
 ON sm.country = bm.country
 ORDER BY Olympic_Games, country
---## return to this query later
-
--- 16. Identify which country won the most gold, most silver and most bronze medals in each olympic games.
----17. Identify which country won the most gold, most silver, most bronze medals and the most medals in each olympic games.
----18. Which countries have never won gold medal but have won silver/bronze medals?
----19. In which Sport/event, India has won highest medals.
----20. Break down all olympic games where Kenya won medal for Hockey and how many medals in each olympic games
-----https://techtfq.com/blog/practice-writing-sql-queries-using-real-dataset
